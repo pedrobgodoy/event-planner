@@ -1,4 +1,4 @@
-import { Entity } from '../../../shared/domain/entity/entity';
+import { Entity } from '../../../../shared/domain/entity/entity';
 import { Email } from './email.vo';
 import { Password } from './password.vo';
 import { Name } from './user-name.vo';
