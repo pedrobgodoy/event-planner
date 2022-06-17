@@ -2,9 +2,9 @@ import { Password } from './password.vo';
 import * as bcrypt from 'bcrypt';
 
 describe('Password Unit Test', () => {
-  it('should create a password', () => {
+  it('should create a password', async () => {
     const password = Password.create('RuUxVT5yrJm%afhL');
-    expect(bcrypt.compareSync('RuUxVT5yrJm%afhL', password.hash)).toBeTruthy();
+    expect(bcrypt.compareSync('RuUxVT5yrJm%afhL', await password.getHashedValue())).toBeTruthy();
   });
 
   it("shouldn't create a password with less than 6 characters", () => {

@@ -22,8 +22,8 @@ export class User extends Entity<UserProps> {
     return this.props.email.value;
   }
 
-  get hashedPassword(): string {
-    return this.props.password.hash;
+  get hashedPassword(): Promise<string> {
+    return this.props.password.getHashedValue();
   }
 
   private constructor(props: UserProps, id?: string) {

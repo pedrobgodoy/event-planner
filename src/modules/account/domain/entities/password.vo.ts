@@ -4,18 +4,24 @@ export class Password {
   private value?: string;
   private _hash?: string;
 
-  get hash(): string {
-    return this._hash || this.hashPassword();
+  async getHashedValue(): Promise<string> {
+    return this._hash || (await this.hashPassword());
   }
 
   private constructor({ value, hash }: { value?: string; hash?: string }) {
     this.value = value;
-    this._hash = hash || this.hashPassword();
+    this._hash = hash;
   }
 
   public static create(value: string): Password {
+    if (!value) {
+      throw new Error('Password must be defined');
+    }
     if (value.length < 6) {
       throw new Error('Password must be at least 6 characters');
+    }
+    if (value.length > 255) {
+      throw new Error('Password must be less than 255 characters');
     }
     if (!value.match(/\d/)) {
       throw new Error('Password must contain at least one number');
@@ -36,7 +42,7 @@ export class Password {
     return new Password({ hash });
   }
 
-  private hashPassword(): string {
-    return bcrypt.hashSync(this.value || '', 10);
+  private async hashPassword(): Promise<string> {
+    return bcrypt.hash(this.value || '', 10);
   }
 }
