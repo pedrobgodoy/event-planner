@@ -1,4 +1,5 @@
 import { Email } from '../domain/entities/email.vo';
+import { Password } from '../domain/entities/password.vo';
 import { Name } from '../domain/entities/user-name.vo';
 import { User } from '../domain/entities/user.entity';
 import { InMemoryUserRepository } from '../infraestructure/persistence/in-memory-user.repository';
@@ -17,7 +18,7 @@ describe('CreateUser UseCase', () => {
     const output = await sut.execute({
       name: 'John Doe',
       email: 'john@doe.com',
-      password: '123',
+      password: 'RuUxVT5yrJm%afhL',
     });
 
     expect(output).toBeDefined();
@@ -31,14 +32,14 @@ describe('CreateUser UseCase', () => {
     const { sut } = createSUT();
 
     const output = await sut.execute({
-      name: 'John Doe 2',
+      name: 'John Doe',
       email: 'john2@doe.com',
-      password: '123',
+      password: 'RuUxVT5yrJm%afhL',
     });
 
     expect(output).toBeDefined();
     expect(output).toStrictEqual({
-      name: 'John Doe 2',
+      name: 'John Doe',
       email: 'john2@doe.com',
     });
   });
@@ -48,11 +49,12 @@ describe('CreateUser UseCase', () => {
     const input = {
       name: 'John Doe',
       email: 'john@doe.com',
-      password: '123',
+      password: 'RuUxVT5yrJm%afhL',
     };
     const name = Name.create(input.name);
     const email = Email.create(input.email);
-    userRepository.users.push(User.create({ name, email, password: input.password }));
+    const password = Password.create(input.password);
+    userRepository.users.push(User.create({ name, email, password }));
 
     await expect(sut.execute(input)).rejects.toThrow('Email already in use');
   });
